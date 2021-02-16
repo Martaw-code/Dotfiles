@@ -5,6 +5,8 @@ source $VIMRUNTIME/vimrc_example.vim
 "vim automatically maximize on Windows
 "au GUIEnter * simalt ~x
 
+"swap files saved on .vimbackup"
+au BufWritePre * let &bex = '-' . strftime("%Y%m%d-%H%M%S") . '.vimbackup'
 
 "Syntax Options
 
@@ -30,6 +32,13 @@ set ai
 set ruler
 "display line numbers
 set number
+"force text to 80 columns"
+set tw=80
+"stop creating undo file ".un~"
+set noundofile
+
+"set nobackup
+"set noswapfile
 
 augroup ntoggle
     autocmd!
@@ -73,7 +82,7 @@ inoremap {} {}
 
 
 set diffexpr=MyDiff()
- function MyDiff()
+function MyDiff()
   let opt = '-a --binary '
   if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
   if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
