@@ -1,48 +1,31 @@
 set nocompatible              " be iMproved, required
+set laststatus=2
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
+"
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 " let Vundle manage Vundle, required
-"Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-"Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'git://git.wincent.com/command-t.git'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'ycm-core/YouCompleteMe'
+"Plugin 'adimit/prolog.vim'          " prolog
+Plugin 'adimit/prolog.vim'
+Plugin 'valloric/youcompleteme'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'scrooloose/syntastic'
+Plugin 'rakr/vim-one'
+Plugin 'scrooloose/nerdtree'
+Plugin 'itchyny/lightline.vim'
+Plugin 'bfrg/vim-cpp-modern'
 " All of your Plugins must be added before the following line
-"call vundle#end()            " required
-"filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-" Plugin 'zxqfl/tabnine-vim'
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 let $LANG = 'en'
 "Setting up .vimrc
@@ -111,6 +94,33 @@ augroup ntoggle
     autocmd BufLeave,FocusLost,InsertEnter * set nornu
 augroup END
 
+" quit preview window ycm
+set completeopt-=preview
+let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_show_diagnostics_ui = 1 "adeu hightlight
+let g:airline_theme='one'
+"let g:airline_theme='simple'
+
+let s:clang_library_path='/Library/Developer/CommandLineTools/usr/lib'
+if isdirectory(s:clang_library_path)
+    let g:clang_library_path=s:clang_library_path
+endif
+
+"let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
+"let g:cpp_class_decl_highlight = 1
+"let g:cpp_concepts_highlight = 1
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+colorscheme one
+"set background=dark " for the dark version
+set background=light " for the light version
+
 "guifont  font=Fixedsys  height(h)=10
 set gfn=Fixedsys:h10
 "clipboard default register
@@ -125,15 +135,12 @@ set smartcase
 
 "More Interface Options
 
-"Vim Color Scheme
-colorscheme peachpuff
-"flash the screen instead of beeping on errors
-set visualbell
 
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
 
 "Comments on Vim
 highlight Comment ctermfg=green
-
 
 autocmd filetype cpp nnoremap <F5> :w <bar> !g++ -std=c++17 % -o %:r -Wl,--stack,268435456<CR>
 autocmd filetype cpp nnoremap <F6> :!%:r<CR>
